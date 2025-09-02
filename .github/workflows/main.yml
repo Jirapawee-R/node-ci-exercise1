@@ -32,7 +32,7 @@ jobs:
     need: [lint]
     permissions:
       security-events: write
-      actions: read # need action read because there is 2 action steps {Initialize, Analysis}
+      actions: read
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
