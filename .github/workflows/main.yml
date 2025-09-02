@@ -27,10 +27,27 @@ jobs:
       - name: Run Eslint
         run: npm run lint
 
+  codeql:
+    runs-on: ubuntu-latest
+    need: [lint]
+    permissions:
+      security-events: write
+      actions: read # need action read because there is 2 action steps {Initialize, Analysis}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Initialize codeql
+        uses: github/codeql-action/init@v3
+        with:
+          languages: javascript-typescript
+      
+      - name: Perform Codeql Analysis
+        uses: github/codeql-action/analyze@v3
 
   build:
     runs-on: ubuntu-latest
-    needs: [lint]
+    needs: [codeql]
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
